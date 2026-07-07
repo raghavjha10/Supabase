@@ -11,7 +11,10 @@ export function useRealtimeNotices(setNotices) {
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'notices' },
         (payload) => {
-          setNotices((prev) => [payload.new, ...prev])
+          setNotices((prev) => {
+            if (prev.some((n) => n.id === payload.new.id)) return prev
+            return [payload.new, ...prev]
+          })
         }
       )
       .on(

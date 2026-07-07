@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '../supabaseClient'
 
@@ -34,7 +35,10 @@ export function useNotifications(userId) {
           filter: `user_id=eq.${userId}`,
         },
         (payload) => {
-          setNotifications((prev) => [payload.new, ...prev])
+          setNotifications((prev) => {
+            if (prev.some((n) => n.id === payload.new.id)) return prev
+            return [payload.new, ...prev]
+          })
         }
       )
       .subscribe()

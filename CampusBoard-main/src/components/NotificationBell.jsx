@@ -19,7 +19,7 @@ export default function NotificationBell({ userId }) {
 
       {open && (
         <div className="bell-dropdown">
-          {notifications.length === 0 && <p>No notifications yet.</p>}
+          {notifications.length === 0 && <p className="empty-text">No notifications yet.</p>}
           {notifications.map((n) => (
             <div key={n.id} className="bell-item">
               <p>{n.message}</p>
