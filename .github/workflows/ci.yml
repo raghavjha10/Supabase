@@ -2,15 +2,12 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   build:
-    name: Install & Build
     runs-on: ubuntu-latest
 
     defaults:
@@ -18,24 +15,18 @@ jobs:
         working-directory: CampusBoard-main
 
     steps:
-      # Checkout the repository
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      # Setup Node.js
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
           cache-dependency-path: CampusBoard-main/package-lock.json
 
-      # Install dependencies
       - name: Install dependencies
         run: npm ci
 
-      # Build the Vite application
-      - name: Build project
+      - name: Build
         run: npm run build
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
